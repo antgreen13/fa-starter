@@ -4,12 +4,14 @@ export interface Character {
     class: string;
 }
 
-export interface Race { //TODO: add race details
+export interface Race {
     id: number;
     name: string;
+    description: string;
 }
 
-export interface Class { //TODO: add class details
+export interface Class { 
     id: number;
     name: string;
+    description: string;
 }
