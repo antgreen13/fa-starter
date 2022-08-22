@@ -3,25 +3,25 @@
     <mat-tab label="Race">
         <mat-form-field appearance="fill">
             <mat-label>Character Race</mat-label>
-            <mat-select [(ngModel)]="selectedRace" name="race" (selectionChange)="displayRaceDescription($event.value)">
-                <mat-option *ngFor="let race of raceData" [value]="race.name">
+            <mat-select [(ngModel)]="selectedRace" name="race">
+                <mat-option *ngFor="let race of raceData" [value]="race">
                 {{race.name}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <div class="body">{{raceDescription}}</div>
+        <div *ngIf='selectedRace' class="body">{{selectedRace.description}}</div>
 
     </mat-tab>
     <mat-tab label="Class">
         <mat-form-field appearance="fill">
             <mat-label>Character Class</mat-label>
-            <mat-select [(ngModel)]="selectedClass" name="class" (selectionChange)="displayClassDescription($event.value)">
-                <mat-option *ngFor="let class of classData" [value]="class.name">
+            <mat-select [(ngModel)]="selectedClass" name="class" >
+                <mat-option *ngFor="let class of classData" [value]="class">
                 {{class.name}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <div class="body">{{classDescription}}</div>
+        <div *ngIf='selectedClass' class="body">{{selectedClass.description}}</div>
     </mat-tab>
     <mat-tab label="Attributes">
         <div class=body>
