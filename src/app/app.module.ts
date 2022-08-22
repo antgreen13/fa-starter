@@ -10,9 +10,10 @@ import { MaterialModule } from './material/material.module';
 import { HomeComponent } from './home/home.component';
 import { AppHeaderComponent } from './components/app-header/app-header.component';
 import { CharactersComponent } from './characters/characters.component';
+import { CreationComponent } from './creation/creation.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, AppHeaderComponent, CharactersComponent],
+  declarations: [AppComponent, HomeComponent, AppHeaderComponent, CharactersComponent, CreationComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
