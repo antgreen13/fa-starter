@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { AppHeaderComponent } from './components/app-header/app-header.component';
 import { CharactersComponent } from './characters/characters.component';
 import { CreationComponent } from './creation/creation.component';
+import { OAuthModule} from 'angular-oauth2-oidc';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, AppHeaderComponent, CharactersComponent, CreationComponent],
@@ -21,6 +22,7 @@ import { CreationComponent } from './creation/creation.component';
     FormsModule,
     MaterialModule,
     HttpClientModule,
+    OAuthModule.forRoot()
   ],
   providers: [
     {

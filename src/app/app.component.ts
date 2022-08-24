@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Chart } from 'chart.js';
+import { GoogleApiService } from './google-api.service';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +8,6 @@ import { Chart } from 'chart.js';
 })
 export class AppComponent {
   title = 'D&D 5th Edition Character Tutorial';
+
+  constructor(private readonly google: GoogleApiService) {}
 }
