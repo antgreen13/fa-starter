@@ -11,8 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { AppHeaderComponent } from './components/app-header/app-header.component';
 import { CharactersComponent } from './characters/characters.component';
 import { CreationComponent } from './creation/creation.component';
-import { OAuthModule} from 'angular-oauth2-oidc';
-
+import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider } from '@abacritt/angularx-social-login';
 @NgModule({
   declarations: [AppComponent, HomeComponent, AppHeaderComponent, CharactersComponent, CreationComponent],
   imports: [
@@ -22,13 +21,30 @@ import { OAuthModule} from 'angular-oauth2-oidc';
     FormsModule,
     MaterialModule,
     HttpClientModule,
-    OAuthModule.forRoot()
+    SocialLoginModule,
   ],
   providers: [
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'fill' },
     },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '65792778025-86aeg3ku686qbm7eilh7keatlk1s70c0.apps.googleusercontent.com'
+            )
+          }
+        ],
+        onError: (err) => {
+          console.error(err);
+        }
+      } as SocialAuthServiceConfig,
+    }
   ],
   bootstrap: [AppComponent],
 })

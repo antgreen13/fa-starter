@@ -9,5 +9,5 @@ import { GoogleApiService } from './google-api.service';
 export class AppComponent {
   title = 'D&D 5th Edition Character Tutorial';
 
-  constructor(private readonly google: GoogleApiService) {}
+  constructor() {}
 }

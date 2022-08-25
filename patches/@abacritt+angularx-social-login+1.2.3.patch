@@ -1,0 +1,13 @@
+diff --git a/node_modules/@abacritt/angularx-social-login/fesm2020/abacritt-angularx-social-login.mjs b/node_modules/@abacritt/angularx-social-login/fesm2020/abacritt-angularx-social-login.mjs
+index cd2ebbf..a2f944b 100644
+--- a/node_modules/@abacritt/angularx-social-login/fesm2020/abacritt-angularx-social-login.mjs
++++ b/node_modules/@abacritt/angularx-social-login/fesm2020/abacritt-angularx-social-login.mjs
+@@ -1,6 +1,7 @@
+ import * as i0 from '@angular/core';
+ import { EventEmitter, Injectable, Inject, Directive, Input, NgModule, Optional, SkipSelf } from '@angular/core';
+-import { BehaviorSubject, skip, filter, take, ReplaySubject, AsyncSubject, isObservable } from 'rxjs';
++import { BehaviorSubject,  ReplaySubject, AsyncSubject, isObservable } from 'rxjs';
++import {skip, filter, take} from 'rxjs/operators'
+ import { CommonModule } from '@angular/common';
+ 
+ class BaseLoginProvider {
