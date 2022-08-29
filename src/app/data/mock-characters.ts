@@ -1,6 +1,6 @@
-import { Character, Race, Class } from "./data-types";
+import { Character, CharacterTest, Race, Class } from "./data-types";
 
-export const CHARACTERS: Character[] = [
+export const CHARACTERS: CharacterTest[] = [
     { name: 'Godrick', race: 'Human', class: 'Fighter'},
     { name: 'Crom', race: 'Dwarf', class: 'Wizard'},
     { name: 'Trevor', race: 'Gnome', class: 'Rogue'}
