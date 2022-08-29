@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { SocialAuthService, GoogleLoginProvider, SocialUser  } from "@abacritt/angularx-social-login";
+import {
+  SocialAuthService,
+  GoogleLoginProvider,
+  SocialUser,
+} from '@abacritt/angularx-social-login';
 import { CHARACTERS } from '../data/mock-characters';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
   user: SocialUser | undefined;
@@ -13,24 +17,23 @@ export class HomeComponent implements OnInit {
   characterData = CHARACTERS;
   displayedColumns: string[] = ['name', 'race', 'class'];
 
-  constructor(private readonly authService: SocialAuthService) { }
+  constructor(private readonly authService: SocialAuthService) {}
 
-  ngOnInit() {
+  public ngOnInit() {
     this.authService.authState.subscribe((user) => {
       this.user = user;
     });
   }
 
-  signInWithGoogle(): void {
+  public signInWithGoogle(): void {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
 
-  signOut(): void {
+  public signOut(): void {
     this.authService.signOut();
   }
 
-  refreshGoogleToken(): void {
+  public refreshGoogleToken(): void {
     this.authService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID);
   }
-
 }
