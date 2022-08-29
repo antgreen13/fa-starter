@@ -1,8 +1,50 @@
 <div class="body">
-    Welcome to the Character builder! 
-    This app is designed to walk new D&D player through the processs of creating a character. 
-    Log in to create a new character and view your existing ones.
-</div>
-<div class="body">
-    <button type="button" class="login-button">Login</button>
+  <ng-container *ngIf="user; else userLogin">
+    <img
+      *ngIf="user['photoUrl']"
+      class="card-img-top img-responsive photo"
+      src="{{ user['photoUrl'] }}"
+    />
+    <div>
+      <h4 class="card-title">Welcome {{ user["name"] }}!</h4>
+    </div>
+    <div>
+      <button class="button" (click)="signOut()">Sign out</button>
+
+      <button
+        *ngIf="user['provider'] === GoogleLoginProvider.PROVIDER_ID"
+        class="button"
+        (click)="refreshGoogleToken()"
+      >
+        Refresh google token
+      </button>
+      <button type="button" class="button" routerLink="/creation">
+        Add a character
+      </button>
+    </div>
+    <table mat-table [dataSource]="characterData">
+      <ng-container
+        [matColumnDef]="column"
+        *ngFor="let column of displayedColumns"
+      >
+        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element[column] }}
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </ng-container>
+
+  <ng-template #userLogin>
+    <p>
+      Welcome to the Character builder! This app is designed to walk new D&D
+      player through the processs of creating a character. Sign in with your
+      Google account to create a new character and view your existing ones.
+    </p>
+    <div *ngIf="!user" class="card text-center">
+      <asl-google-signin-button type="standard"></asl-google-signin-button>
+    </div>
+  </ng-template>
 </div>
