@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { AppRoutingModule } from './app-routing.module';
@@ -10,6 +10,8 @@ import { MaterialModule } from './material/material.module';
 import { HomeComponent } from './home/home.component';
 import { AppHeaderComponent } from './components/app-header/app-header.component';
 import { CreationComponent } from './creation/creation.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import {
   SocialLoginModule,
   SocialAuthServiceConfig,
@@ -23,14 +25,18 @@ import {
     CreationComponent,
   ],
   imports: [
+    MatFormFieldModule,
+    MatInputModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     MaterialModule,
     HttpClientModule,
     SocialLoginModule,
   ],
+  exports: [ MatFormFieldModule, MatInputModule ],
   providers: [
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,

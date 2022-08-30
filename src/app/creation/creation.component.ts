@@ -1,12 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import {CdkDragDrop, moveItemInArray, transferArrayItem, CdkDrag} from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+  CdkDrag,
+} from '@angular/cdk/drag-drop';
 import { RACES, CLASSES } from '../data/mock-characters';
 import { Class, Race } from '../data/data-types';
+import { FormGroup, FormControl } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-creation',
   templateUrl: './creation.component.html',
-  styleUrls: ['./creation.component.css']
+  styleUrls: ['./creation.component.css'],
 })
 export class CreationComponent implements OnInit {
   characterName: string;
@@ -14,6 +21,12 @@ export class CreationComponent implements OnInit {
   selectedClass: Class;
   raceDescription: string;
   classDescription: string;
+
+  characterForm = new FormGroup({
+    characterName: new FormControl(),
+    characterRace: new FormControl(),
+    characterClass: new FormControl(),
+  });
 
   raceData = RACES;
   classData = CLASSES;
@@ -27,22 +40,29 @@ export class CreationComponent implements OnInit {
   int = [];
   cha = [];
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  drop(event: CdkDragDrop<number[]>) {
+  public drop(event: CdkDragDrop<number[]>) {
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
     } else {
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
-        event.currentIndex,
+        event.currentIndex
       );
     }
   }
 
+  public saveCharacter() {
+    //TODO: actually save
+    this.router.navigate(['/home']);
+  }
 }
