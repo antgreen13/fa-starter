@@ -5,20 +5,17 @@ import flask_cors
 from dotenv import load_dotenv
 from firebase_admin import credentials, firestore, initialize_app
 
-import example
-
 load_dotenv()
 
 # Set up the static folder to serve our angular client resources (*.js, *.css)
 app = flask.Flask(__name__,
                   static_folder='dist/client', static_url_path='/client/')
-app.register_blueprint(example.blueprint)
 
 # Initialize Firestore DB
 cred = credentials.Certificate('key.json')
 default_app = initialize_app(cred)
 db = firestore.client()
-todo_ref = db.collection('characters')
+character_data = db.collection('characters')
 
 # If we're running in debug, defer to the typescript development server
 # This gets us things like live reload and better sourcemaps.
@@ -57,13 +54,12 @@ def read():
     """
         read() : Fetches documents from Firestore collection as JSON.
         user_email : Return document that matches query email.
-        all_todos : Return all documents.
     """
     try:
-        # Check if ID was passed to URL query
+        # Check if user email was passed to URL query
         user_email = flask.request.args.get('userEmail')
         if user_email:
-            todo = todo_ref.document(user_email).get()
+            todo = character_data.document(user_email).get()
             return flask.jsonify(todo.to_dict()), 200
     except Exception as e:
         return f"An Error Occurred: {e}"
