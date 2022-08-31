@@ -21,6 +21,10 @@
       <button type="button" class="button" routerLink="/creation">
         Add a character
       </button>
+       <!-- this button is a test of the service. Will be replaced with test files -->
+      <button type="button" class="button" (click)="getUserCharacters()">
+        Test API
+      </button>
     </div>
     <table mat-table [dataSource]="characterData">
       <ng-container
@@ -43,7 +47,7 @@
       player through the processs of creating a character. Sign in with your
       Google account to create a new character and view your existing ones.
     </p>
-    <div *ngIf="!user" class="card text-center">
+    <div class="card text-center">
       <asl-google-signin-button type="standard"></asl-google-signin-button>
     </div>
   </ng-template>
