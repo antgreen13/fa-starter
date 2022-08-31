@@ -5,6 +5,7 @@ import {
   SocialUser,
 } from '@abacritt/angularx-social-login';
 import { CHARACTERS } from '../data/mock-characters';
+import { ApiService } from '../api.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -15,9 +16,14 @@ export class HomeComponent implements OnInit {
   GoogleLoginProvider = GoogleLoginProvider;
 
   characterData = CHARACTERS;
+  test: string;
   displayedColumns: string[] = ['name', 'race', 'class'];
 
-  constructor(private readonly authService: SocialAuthService) {}
+  constructor(
+    private readonly authService: SocialAuthService,
+    private apiService: ApiService
+  ) {}
+
 
   public ngOnInit() {
     this.authService.authState.subscribe((user) => {
@@ -35,5 +41,13 @@ export class HomeComponent implements OnInit {
 
   public refreshGoogleToken(): void {
     this.authService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID);
+  }
+
+  getUserCharacters(): void {
+    if (this.user) {
+      this.apiService.getCharacters(this.user.email).subscribe((result) => {
+        this.test = result;
+      });
+    }
   }
 }
