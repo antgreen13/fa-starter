@@ -6,9 +6,11 @@ import {
   CdkDrag,
 } from '@angular/cdk/drag-drop';
 import { RACES, CLASSES } from '../data/mock-characters';
-import { Class, Race } from '../data/data-types';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Character, Class, Race } from '../data/data-types';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AppCacheService } from '../app-cache.service';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-creation',
@@ -21,12 +23,8 @@ export class CreationComponent implements OnInit {
   selectedClass: Class;
   raceDescription: string;
   classDescription: string;
-
-  characterForm = new FormGroup({
-    characterName: new FormControl(),
-    characterRace: new FormControl(),
-    characterClass: new FormControl(),
-  });
+  character = new Character();
+  userEmail: string;
 
   raceData = RACES;
   classData = CLASSES;
@@ -40,7 +38,12 @@ export class CreationComponent implements OnInit {
   int = [];
   cha = [];
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private appCache: AppCacheService,
+    private apiService: ApiService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -62,7 +65,24 @@ export class CreationComponent implements OnInit {
   }
 
   public saveCharacter() {
-    //TODO: actually save
-    this.router.navigate(['/home']);
+    this.character.name = this.characterName;
+    this.character.race = this.selectedRace.name;
+    this.character.class = this.selectedClass.name;
+
+    this.character.attributes.str = this.str[0];
+    this.character.attributes.dex = this.dex[0];
+    this.character.attributes.con = this.con[0];
+    this.character.attributes.int = this.int[0];
+    this.character.attributes.wis = this.wis[0];
+    this.character.attributes.cha = this.cha[0];
+
+    this.character.userEmail = this.appCache.authorizedUser
+      ? this.appCache.authorizedUser.email
+      : '';
+
+    this.apiService.saveCharacter(this.character).subscribe((result) => {
+      this.character = result;
+      this.router.navigate(['/home']);
+    });
   }
 }

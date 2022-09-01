@@ -1,10 +1,4 @@
-import { Character, Race, Class } from './data-types';
-
-export const CHARACTERS: Character[] = [
-  { name: 'Godrick', race: 'Human', class: 'Fighter' },
-  { name: 'Crom', race: 'Dwarf', class: 'Wizard' },
-  { name: 'Trevor', race: 'Gnome', class: 'Rogue' },
-];
+import { Race, Class } from './data-types';
 
 export const RACES: Race[] = [
   {
