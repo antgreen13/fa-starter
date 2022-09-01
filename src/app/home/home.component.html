@@ -32,11 +32,15 @@
           {{ element[column] }}
         </td>
       </ng-container>
-      <ng-container matColumnDef="delete">
-        <th mat-header-cell *matHeaderCellDef aria-label="row actions"></th>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef aria-label="row actions">
+        </th>
         <td mat-cell *matCellDef="let element; let i = index">
-          <button mat-button class="button-remove" (click)="removeCharacter(i)">
-            Delete
+          <button mat-icon-button (click)="editCharacter(i)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="removeCharacter(i)">
+            <mat-icon>delete</mat-icon>
           </button>
         </td>
       </ng-container>
