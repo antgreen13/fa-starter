@@ -27,4 +27,9 @@ export class ApiService {
     const url = `${this.apiUrl}/saveCharacter`;
     return this.http.post<any>(url, character, httpOptions);
   }
+
+  public deleteCharacter(userEmail: string, characterName: string) {
+    const url = `${this.apiUrl}/delete?userEmail=${userEmail}&characterName=${characterName}`;
+    return this.http.delete<any>(url);
+  }
 }
