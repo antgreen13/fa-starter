@@ -9,11 +9,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { HomeComponent } from './home/home.component';
 import { AppHeaderComponent } from './components/app-header/app-header.component';
-import { CharactersComponent } from './characters/characters.component';
 import { CreationComponent } from './creation/creation.component';
-import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider } from '@abacritt/angularx-social-login';
+import {
+  SocialLoginModule,
+  SocialAuthServiceConfig,
+  GoogleLoginProvider,
+} from '@abacritt/angularx-social-login';
 @NgModule({
-  declarations: [AppComponent, HomeComponent, AppHeaderComponent, CharactersComponent, CreationComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    AppHeaderComponent,
+    CreationComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -37,14 +45,14 @@ import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider } from 
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(
               '65792778025-86aeg3ku686qbm7eilh7keatlk1s70c0.apps.googleusercontent.com'
-            )
-          }
+            ),
+          },
         ],
         onError: (err) => {
           console.error(err);
-        }
+        },
       } as SocialAuthServiceConfig,
-    }
+    },
   ],
   bootstrap: [AppComponent],
 })
