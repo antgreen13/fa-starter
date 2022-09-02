@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { GoogleApiService } from './google-api.service';
 
 @Component({
   selector: 'app-root',

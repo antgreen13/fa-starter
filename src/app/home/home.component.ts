@@ -10,6 +10,7 @@ import { ApiService } from '../api.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { AppCacheService } from '../app-cache.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -25,17 +26,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   private subs = new Subscription();
 
   displayedColumns: string[] = ['name', 'race', 'class'];
-  public characterData = new MatTableDataSource<Character>();
+  public characterData = new MatTableDataSource<Character[]>();
   private dataArray: any = [];
 
   constructor(
     private readonly authService: SocialAuthService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    public appCache: AppCacheService
   ) {}
 
   public ngOnInit() {
     this.authService.authState.subscribe((user) => {
       this.user = user;
+      this.appCache.authorizedUser = user;
       this.getUserCharacters();
     });
   }
@@ -53,6 +56,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public signOut(): void {
     this.authService.signOut();
     this.dataArray = [];
+    this.appCache.authorizedUser = undefined;
   }
 
   public refreshGoogleToken(): void {
@@ -63,10 +67,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.user) {
       this.subs.add(
         this.apiService
-          .getCharacters(this.user.email)
+          .getCharacters(this.user.email, "")
           .subscribe((result: Character[]) => {
-            this.dataArray.push(result);
-            this.characterData = new MatTableDataSource<Character>(
+            result.forEach(element => {
+              this.dataArray.push(element);
+            });
+            this.characterData = new MatTableDataSource<Character[]>(
               this.dataArray
             );
           })

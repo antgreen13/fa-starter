@@ -11,13 +11,20 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root',
 })
-@Injectable({ providedIn: 'root' })
 export class ApiService {
-  private apiUrl = 'http://localhost:5000'; // URL to REST API
+  private apiUrl = 'http://localhost:5000/firebase'; // URL to REST API
   constructor(private http: HttpClient) {}
 
-  public getCharacters(userEmail: string): Observable<Character | Character[]> {
-    const url = `${this.apiUrl}/list?userEmail=${userEmail}`;
+  public getCharacters(
+    userEmail: string,
+    characterName?: string
+  ): Observable<Character | Character[]> {
+    const url = `${this.apiUrl}/list?userEmail=${userEmail}&characterName=${characterName}`;
     return this.http.get<any>(url);
+  }
+
+  public saveCharacter(character: Character): Observable<Character> {
+    const url = `${this.apiUrl}/saveCharacter`;
+    return this.http.post<any>(url, character, httpOptions);
   }
 }
