@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private apiService: ApiService,
     public appCache: AppCacheService,
     private route: ActivatedRoute,
-    private router: Router,
+    private router: Router
   ) {}
 
   public ngOnInit() {
