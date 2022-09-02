@@ -1,19 +1,36 @@
-export interface Race {
+export class Race {
   id: number;
   name: string;
   description: string;
+
+  constructor() {}
 }
 
-export interface Class {
+export class Class {
   id: number;
   name: string;
   description: string;
+
+  constructor() {}
 }
 
-export interface Character {
+export class Attributes {
+  str: number;
+  dex: number;
+  con: number;
+  int: number;
+  wis: number;
+  cha: number;
+
+  constructor() {}
+}
+
+export class Character {
   name: string;
   race: string;
   class: string;
   userEmail?: string;
-  attributes?: number[];
+  attributes = new Attributes();
+
+  constructor() {}
 }
