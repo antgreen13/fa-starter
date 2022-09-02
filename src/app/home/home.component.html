@@ -22,7 +22,6 @@
         Add a character
       </button>
     </div>
-
     <table mat-table [dataSource]="characterData.data">
       <ng-container
         [matColumnDef]="column"
@@ -34,20 +33,20 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="delete">
-        <th mat-header-cell *matHeaderCellDef aria-label="row actions">
-        </th>
+        <th mat-header-cell *matHeaderCellDef aria-label="row actions"></th>
         <td mat-cell *matCellDef="let element; let i = index">
           <button mat-button class="button-remove" (click)="removeCharacter(i)">
             Delete
           </button>
         </td>
       </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-      <tr mat-row *matRowDef="let row; columns: columnsToDisplayWithExpand"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedActionColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedActionColumns"
+      ></tr>
     </table>
   </ng-container>
-
   <ng-template #userLogin>
     <p>
       Welcome to the Character builder! This app is designed to walk new D&D

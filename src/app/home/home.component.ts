@@ -25,8 +25,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private subs = new Subscription();
 
-  displayedColumns: string[] = ['name', 'race', 'class'];
-  columnsToDisplayWithExpand = [...this.displayedColumns, 'delete'];
+  public displayedColumns: string[] = ['name', 'race', 'class'];
+  public displayedActionColumns = [...this.displayedColumns, 'delete'];
 
   public characterData = new MatTableDataSource<Character[]>();
   private dataArray: any = [];
@@ -69,9 +69,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.user) {
       this.subs.add(
         this.apiService
-          .getCharacters(this.user.email, "")
+          .getCharacters(this.user.email, '')
           .subscribe((result: Character[]) => {
-            result.forEach(element => {
+            result.forEach((element) => {
               this.dataArray.push(element);
             });
             this.characterData = new MatTableDataSource<Character[]>(
@@ -84,12 +84,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public removeCharacter(index: number) {
     if (this.user) {
-      this.apiService.deleteCharacter(this.user.email, this.dataArray[index].name).subscribe(result => {
-        this.dataArray.splice(index, 1);
-        this.characterData.data =[...this.dataArray]
-      })
+      this.apiService
+        .deleteCharacter(this.user.email, this.dataArray[index].name)
+        .subscribe((result) => {
+          this.dataArray.splice(index, 1);
+          this.characterData.data = [...this.dataArray];
+        });
     }
-    
-    
   }
 }
