@@ -18,7 +18,7 @@ def read():
   """
     read() : Fetches documents from Firestore collection as JSON.
     character : Return document that matches query email and name.
-      all_characters :  Return all characters in a user collection.
+    all_characters :  Return all characters in a user collection.
   """
   try:
     # Check if user email was passed to URL query
@@ -56,7 +56,7 @@ def save():
 @blueprint.route('/delete', methods=['GET', 'DELETE'])
 def delete():
     """
-        delete() : Delete a character document from Firestore collection.
+      delete() : Delete a character document from Firestore collection.
     """
     try:
         # Check for userEmail and characterName in URL query
