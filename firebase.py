@@ -66,4 +66,4 @@ def delete():
         character_data.document(character_name).delete()
         return flask.jsonify({"success": True}), 200
     except Exception as e:
-        return f"An Error Occurred: {e}"
+        return f"An Error Occurred when trying to delete character data: {e}. Args: {user_email}, {character_name}"
