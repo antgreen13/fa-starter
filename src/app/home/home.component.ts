@@ -26,8 +26,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private subs = new Subscription();
 
-  displayedColumns: string[] = ['name', 'race', 'class'];
-  columnsToDisplayWithExpand = [...this.displayedColumns, 'actions'];
+  public displayedColumns: string[] = ['name', 'race', 'class'];
+  public displayedActionColumns = [...this.displayedColumns, 'actions'];
 
   public characterData = new MatTableDataSource<Character[]>();
   private dataArray: any = [];
