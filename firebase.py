@@ -15,27 +15,27 @@ db = firestore.client()
 
 @blueprint.route('/list', methods=['GET'])
 def read():
-    """
-      read() : Fetches documents from Firestore collection as JSON.
-      character : Return document that matches query email and name.
-       all_characters :  Return all characters in a user collection.
-    """
-    try:
-      # Check if user email was passed to URL query
-      user_email = flask.request.args.get('userEmail')
-      character_name = flask.request.args.get('characterName')
+  """
+    read() : Fetches documents from Firestore collection as JSON.
+    character : Return document that matches query email and name.
+      all_characters :  Return all characters in a user collection.
+  """
+  try:
+    # Check if user email was passed to URL query
+    user_email = flask.request.args.get('userEmail')
+    character_name = flask.request.args.get('characterName')
 
-      if user_email:
-        character_data = db.collection(user_email)
-        if character_name:
-          character = character_data.document(character_name).get()
-          return flask.jsonify(character.to_dict()), 200
-        else:
-          all_characters = [doc.to_dict() for doc in character_data.stream()]
-          return flask.jsonify(all_characters), 200
+    if user_email:
+      character_data = db.collection(user_email)
+      if character_name:
+        character = character_data.document(character_name).get()
+        return flask.jsonify(character.to_dict()), 200
+      else:
+        all_characters = [doc.to_dict() for doc in character_data.stream()]
+        return flask.jsonify(all_characters), 200
 
-    except Exception as e:
-        return f"An Error Occurred: {e}"
+  except Exception as e:
+      return f"An Error Occurred when trying to fetch character data: {e}. Args: {user_email}, {character_name}"
 
 @blueprint.route('/saveCharacter', methods=['POST'])
 def save():
@@ -43,14 +43,15 @@ def save():
     save() : Add document to Firestore collection with request body.
     Ensure you pass a custom userEmail and characterName as part of json body in post request
   """
-  if flask.request.method == 'POST':
+  try:
     user_email = flask.request.json['userEmail']
     character_name = flask.request.json['name']
     doc_ref = db.collection(user_email).document(character_name)
-    doc_ref .set(flask.request.json)
+    doc_ref.set(flask.request.json)
     return flask.jsonify({"success": True}), 200
-  else:
-    return flask.jsonify({"failure": True}), 400
+    
+  except Exception as e:
+        return f"An Error Occurred when trying to save/update character data: {e}. Args: {user_email}, {character_name}"
 
 @blueprint.route('/delete', methods=['GET', 'DELETE'])
 def delete():
