@@ -101,4 +101,5 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.router.navigate([`/creation/${this.dataArray[index].name}`]);
     }
   }
+
 }

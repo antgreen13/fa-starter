@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { AppHeaderComponent } from './components/app-header/app-header.component';
 import { CreationComponent } from './creation/creation.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import {
   SocialLoginModule,
@@ -26,6 +27,7 @@ import {
   ],
   imports: [
     MatFormFieldModule,
+    MatDialogModule,
     MatInputModule,
     BrowserModule,
     AppRoutingModule,
@@ -36,7 +38,7 @@ import {
     HttpClientModule,
     SocialLoginModule,
   ],
-  exports: [ MatFormFieldModule, MatInputModule ],
+  exports: [ MatFormFieldModule, MatInputModule, MatDialogModule ],
   providers: [
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
