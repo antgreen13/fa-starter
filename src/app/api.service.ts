@@ -12,24 +12,30 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class ApiService {
-  private apiUrl = 'http://localhost:5000/firebase'; // URL to REST API
+  private flaskUrl = 'http://localhost:5000/firebase'; // URL to REST API
+  private dndApiUrl = 'https://www.dnd5eapi.co/api'; // URL to Dnd 5e API
   constructor(private http: HttpClient) {}
 
   public getCharacters(
     userEmail: string,
     characterName?: string
   ): Observable<Character | Character[]> {
-    const url = `${this.apiUrl}/list?userEmail=${userEmail}&characterName=${characterName}`;
-    return this.http.get<any>(url);
+    const endpoint = `${this.flaskUrl}/list?userEmail=${userEmail}&characterName=${characterName}`;
+    return this.http.get<any>(endpoint);
   }
 
   public saveCharacter(character: Character): Observable<Character> {
-    const url = `${this.apiUrl}/saveCharacter`;
-    return this.http.post<any>(url, character, httpOptions);
+    const endpoint = `${this.flaskUrl}/saveCharacter`;
+    return this.http.post<any>(endpoint, character, httpOptions);
   }
 
   public deleteCharacter(userEmail: string, characterName: string) {
-    const url = `${this.apiUrl}/delete?userEmail=${userEmail}&characterName=${characterName}`;
-    return this.http.delete<any>(url);
+    const endpoint = `${this.flaskUrl}/delete?userEmail=${userEmail}&characterName=${characterName}`;
+    return this.http.delete<any>(endpoint);
+  }
+
+  public getAttribute(attribute: string): Observable<any> {
+    const endpoint = `${this.dndApiUrl}/ability-scores/${attribute}`;
+    return this.http.get<any>(endpoint);
   }
 }
