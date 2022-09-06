@@ -32,11 +32,21 @@
           {{ element[column] }}
         </td>
       </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef aria-label="row actions"></th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <button mat-button class="button-remove" (click)="removeCharacter(i)">
+            Delete
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedActionColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedActionColumns"
+      ></tr>
     </table>
   </ng-container>
-
   <ng-template #userLogin>
     <p>
       Welcome to the Character builder! This app is designed to walk new D&D

@@ -52,3 +52,19 @@ def save():
     
   except Exception as e:
         return f"An Error Occurred when trying to save/update character data: {e}. Args: {user_email}, {character_name}"
+
+@blueprint.route('/delete', methods=['GET', 'DELETE'])
+def delete():
+    """
+        delete() : Delete a character document from Firestore collection.
+    """
+    try:
+        # Check for userEmail and characterName in URL query
+        user_email = flask.request.args.get('userEmail')
+        character_name = flask.request.args.get('characterName')
+        character_data = db.collection(user_email)
+        character_data.document(character_name).delete()
+        return flask.jsonify({"success": True}), 200
+    except Exception as e:
+        return f"An Error Occurred when trying to delete character data: {e}. Args: {user_email}, {character_name}"
+
