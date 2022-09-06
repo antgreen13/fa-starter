@@ -16,7 +16,7 @@
 
     <mat-form-field appearance="fill">
       <mat-label>Character Race</mat-label>
-      <mat-select [(ngModel)]="selectedRace" name="race" required>
+      <mat-select [(ngModel)]="selectedRace" name="race" required (ngModelChange)="getRaceData()">
         <mat-option *ngFor="let race of raceData" [value]="race">
           {{ race.name }}
         </mat-option>
@@ -24,6 +24,10 @@
     </mat-form-field>
     <div *ngIf="selectedRace" class="body">
       {{ selectedRace.description }}
+      <h2>Racial Traits</h2>
+      <div *ngFor="let trait of raceTraits">
+        <button class="button" (click)="openPopupDialog('trait', trait.url)">{{trait.name}}</button>
+      </div>
     </div>
   </mat-tab>
   <mat-tab label="Class: {{ selectedClass?.name }}">
@@ -49,7 +53,7 @@
     </div>
     <div class="body" cdkDropListGroup>
       <div class="example-container">
-        <button mat-button (click)="openAttributeDialog('str')"><h2>Strength</h2></button>
+        <button mat-button (click)="openPopupDialog('attribute', 'str')"><h2>Strength</h2></button>
 
         <div
           cdkDropList
@@ -63,7 +67,7 @@
         </div>
       </div>
       <div class="example-container">
-        <button mat-button (click)="openAttributeDialog('dex')"><h2>Dexterity</h2></button>
+        <button mat-button (click)="openPopupDialog('attribute', 'dex')"><h2>Dexterity</h2></button>
 
         <div
           cdkDropList
@@ -77,7 +81,7 @@
         </div>
       </div>
       <div class="example-container">
-        <button mat-button (click)="openAttributeDialog('con')"><h2>Constituion</h2></button>
+        <button mat-button (click)="openPopupDialog('attribute', 'con')"><h2>Constituion</h2></button>
 
         <div
           cdkDropList
@@ -91,7 +95,7 @@
         </div>
       </div>
       <div class="example-container">
-        <button mat-button (click)="openAttributeDialog('int')"><h2>Intelligence</h2></button>
+        <button mat-button (click)="openPopupDialog('attribute', 'int')"><h2>Intelligence</h2></button>
 
         <div
           cdkDropList
@@ -105,7 +109,7 @@
         </div>
       </div>
       <div class="example-container">
-        <button mat-button (click)="openAttributeDialog('wis')"><h2>Wisdom</h2></button>
+        <button mat-button (click)="openPopupDialog('attribute', 'wis')"><h2>Wisdom</h2></button>
 
         <div
           cdkDropList
@@ -119,7 +123,7 @@
         </div>
       </div>
       <div class="example-container">
-        <button mat-button (click)="openAttributeDialog('cha')"><h2>Charisma</h2></button>
+        <button mat-button (click)="openPopupDialog('attribute', 'cha')"><h2>Charisma</h2></button>
 
         <div
           cdkDropList
