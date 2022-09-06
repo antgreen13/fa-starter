@@ -6,13 +6,12 @@ import {
   CdkDrag,
 } from '@angular/cdk/drag-drop';
 import { RACES, CLASSES } from '../data/mock-characters';
-import { Character, Class, Race } from '../data/data-types';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Character, Class, Race, RaceTraits } from '../data/data-types';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppCacheService } from '../app-cache.service';
 import { ApiService } from '../api.service';
-import { AttributeDialog } from '../components/attribute-dialog/attribute-dialog';
-import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { PopupDialog } from '../components/popup-dialog/popup-dialog';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-creation',
   templateUrl: './creation.component.html',
@@ -30,6 +29,8 @@ export class CreationComponent implements OnInit {
   raceData = RACES;
   classData = CLASSES;
   attributeScores = [15, 14, 13, 12, 10, 8];
+
+  raceTraits: RaceTraits[] = []
 
   //attributes
   str: number[] = [];
@@ -65,10 +66,10 @@ export class CreationComponent implements OnInit {
       .subscribe((character: Character) => {
         this.characterName = character.name;
         this.selectedRace = this.raceData.find(
-          (race) => (race.name = character.race)
+          (race) => (race.name == character.race)
         );
         this.selectedClass = this.classData.find(
-          (characterClass) => (characterClass.name = character.class)
+          (characterClass) => (characterClass.name == character.class)
         );
         this.attributeScores = [];
 
@@ -78,6 +79,8 @@ export class CreationComponent implements OnInit {
         this.int.push(character.attributes.int);
         this.wis.push(character.attributes.wis);
         this.cha.push(character.attributes.cha);
+
+        this.getRaceData();
       });
   }
 
@@ -118,7 +121,18 @@ export class CreationComponent implements OnInit {
     });
   }
 
-  public openAttributeDialog(attribute: string) {
-    this.dialog.open(AttributeDialog, {data: {attribute: attribute}});
+  public openPopupDialog(type: string, data: string) {
+    this.dialog.open(PopupDialog, { data: { type: type, data: data } });
   }
+
+  public getRaceData() {
+    if (this.selectedRace) {
+      this.apiService
+        .getCharacterRace(this.selectedRace.name.toLowerCase())
+        .subscribe((result) => {
+          this.raceTraits = result.results;
+        });
+    }
+  }
+
 }

@@ -13,7 +13,7 @@ const httpOptions = {
 })
 export class ApiService {
   private flaskUrl = 'http://localhost:5000/firebase'; // URL to REST API
-  private dndApiUrl = 'https://www.dnd5eapi.co/api'; // URL to Dnd 5e API
+  private dndApiUrl = 'https://www.dnd5eapi.co'; // URL to Dnd 5e API
   constructor(private http: HttpClient) {}
 
   public getCharacters(
@@ -35,7 +35,17 @@ export class ApiService {
   }
 
   public getAttribute(attribute: string): Observable<any> {
-    const endpoint = `${this.dndApiUrl}/ability-scores/${attribute}`;
+    const endpoint = `${this.dndApiUrl}/api/ability-scores/${attribute}`;
+    return this.http.get<any>(endpoint);
+  }
+
+  public getCharacterRace(race: string): Observable<any> {
+    const endpoint = `${this.dndApiUrl}/api/races/${race}/traits`;
+    return this.http.get<any>(endpoint);
+  }
+
+  public getTrait(traitUrl :string): Observable<any> {
+    const endpoint= `${this.dndApiUrl}${traitUrl}`
     return this.http.get<any>(endpoint);
   }
 }
