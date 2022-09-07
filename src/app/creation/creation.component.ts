@@ -6,7 +6,7 @@ import {
   CdkDrag,
 } from '@angular/cdk/drag-drop';
 import { RACES, CLASSES } from '../data/mock-characters';
-import { Character, Class, Race, RaceTraits } from '../data/data-types';
+import { ApiData, Character, Class, Race } from '../data/data-types';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppCacheService } from '../app-cache.service';
 import { ApiService } from '../api.service';
@@ -30,7 +30,8 @@ export class CreationComponent implements OnInit {
   classData = CLASSES;
   attributeScores = [15, 14, 13, 12, 10, 8];
 
-  raceTraits: RaceTraits[] = []
+  raceTraits: ApiData[] = [];
+  classFeatures: ApiData[] = [];
 
   //attributes
   str: number[] = [];
@@ -66,10 +67,10 @@ export class CreationComponent implements OnInit {
       .subscribe((character: Character) => {
         this.characterName = character.name;
         this.selectedRace = this.raceData.find(
-          (race) => (race.name == character.race)
+          (race) => race.name == character.race
         );
         this.selectedClass = this.classData.find(
-          (characterClass) => (characterClass.name == character.class)
+          (characterClass) => characterClass.name == character.class
         );
         this.attributeScores = [];
 
@@ -81,6 +82,7 @@ export class CreationComponent implements OnInit {
         this.cha.push(character.attributes.cha);
 
         this.getRaceData();
+        this.getClassData();
       });
   }
 
@@ -135,4 +137,13 @@ export class CreationComponent implements OnInit {
     }
   }
 
+  public getClassData() {
+    if (this.selectedClass) {
+      this.apiService
+        .getCharacterClass(this.selectedClass.name.toLowerCase())
+        .subscribe((result) => {
+          this.classFeatures = result.results;
+        });
+    }
+  }
 }

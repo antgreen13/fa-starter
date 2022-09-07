@@ -48,4 +48,14 @@ export class ApiService {
     const endpoint= `${this.dndApiUrl}${traitUrl}`
     return this.http.get<any>(endpoint);
   }
+
+  public getCharacterClass(characterClass: string): Observable<any> {
+    const endpoint = `${this.dndApiUrl}/api/classes/${characterClass}/features`;
+    return this.http.get<any>(endpoint);
+  }
+
+  public getFeature(featureUrl :string): Observable<any> {
+    const endpoint= `${this.dndApiUrl}${featureUrl}`
+    return this.http.get<any>(endpoint);
+  }
 }
