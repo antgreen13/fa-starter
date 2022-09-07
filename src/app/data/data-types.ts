@@ -35,7 +35,7 @@ export class Character {
   constructor() {}
 }
 
-export class RaceTraits {
+export class ApiData {
   index: string;
   name: string;
   url: string;

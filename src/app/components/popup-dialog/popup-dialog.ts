@@ -35,9 +35,14 @@ export class PopupDialog implements OnInit {
         });
         break;
       }
+      case 'feature': {
+        this.apiService.getFeature(this.data.data).subscribe((result) => {
+          this.title = result.name;
+          this.description = result.desc.join(' ');
+        });
+        break;
+      }
     }
     
-
-
   }
 }
