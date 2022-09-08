@@ -19,8 +19,8 @@ import { ApiService } from '../api.service';
 })
 export class CreationComponent implements OnInit {
   characterName: string;
-  selectedRace: Race | undefined;
-  selectedClass: Class | undefined;
+  selectedRace?: Race;
+  selectedClass?: Class;
   raceDescription: string;
   classDescription: string;
   character = new Character();
@@ -97,7 +97,7 @@ export class CreationComponent implements OnInit {
   }
 
   public saveCharacter() {
-    this.character.name = this.characterName ? this.characterName : '';
+    this.character.name = this.characterName || '';
     this.character.race = this.selectedRace ? this.selectedRace.name : '';
     this.character.class = this.selectedClass ? this.selectedClass.name : '';
 
