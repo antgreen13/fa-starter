@@ -11,7 +11,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppCacheService } from '../app-cache.service';
 import { ApiService } from '../api.service';
-
+import { AttributeDialog } from '../components/attribute-dialog/attribute-dialog';
+import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
 @Component({
   selector: 'app-creation',
   templateUrl: './creation.component.html',
@@ -42,7 +43,8 @@ export class CreationComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private appCache: AppCacheService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -114,5 +116,9 @@ export class CreationComponent implements OnInit {
       this.character = result;
       this.router.navigate(['/home']);
     });
+  }
+
+  public openAttributeDialog(attribute: string) {
+    this.dialog.open(AttributeDialog, {data: {attribute: attribute}});
   }
 }
