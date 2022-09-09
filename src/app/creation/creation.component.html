@@ -46,7 +46,12 @@
   <mat-tab label="Class: {{ selectedClass?.name }}">
     <mat-form-field appearance="fill">
       <mat-label>Character Class</mat-label>
-      <mat-select [(ngModel)]="selectedClass" name="class" required>
+      <mat-select
+        [(ngModel)]="selectedClass"
+        name="class"
+        required
+        (ngModelChange)="getClassData()"
+      >
         <mat-option *ngFor="let class of classData" [value]="class">
           {{ class.name }}
         </mat-option>
@@ -54,6 +59,18 @@
     </mat-form-field>
     <div *ngIf="selectedClass" class="body">
       {{ selectedClass.description }}
+      <h2>Class Features</h2>
+      <div *ngFor="let feature of classFeatures">
+        <button
+          mat-raise-button
+          color="primary"
+          class="button"
+          (click)="openPopupDialog('feature', feature.url)"
+        >
+          {{ feature.name }}
+          <mat-icon>help</mat-icon>
+        </button>
+      </div>
     </div>
   </mat-tab>
   <mat-tab label="Attributes">
