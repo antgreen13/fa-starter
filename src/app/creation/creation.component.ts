@@ -19,8 +19,8 @@ import { ApiService } from '../api.service';
 })
 export class CreationComponent implements OnInit {
   characterName: string;
-  selectedRace: Race;
-  selectedClass: Class;
+  selectedRace?: Race;
+  selectedClass?: Class;
   raceDescription: string;
   classDescription: string;
   character = new Character();
@@ -31,12 +31,12 @@ export class CreationComponent implements OnInit {
   attributeScores = [15, 14, 13, 12, 10, 8];
 
   //attributes
-  str = [];
-  dex = [];
-  con = [];
-  wis = [];
-  int = [];
-  cha = [];
+  str: number[] = [];
+  dex: number[] = [];
+  con: number[] = [];
+  wis: number[] = [];
+  int: number[] = [];
+  cha: number[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -45,7 +45,39 @@ export class CreationComponent implements OnInit {
     private apiService: ApiService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.appCache.authorizedUser) {
+      this.userEmail = this.appCache.authorizedUser.email;
+    } else {
+      this.router.navigate(['/home']);
+    }
+    const name = this.route.snapshot.paramMap.get('name');
+    if (name) {
+      this.getCharacter(name);
+    }
+  }
+
+  private getCharacter(name): void {
+    this.apiService
+      .getCharacters(this.userEmail, name)
+      .subscribe((character: Character) => {
+        this.characterName = character.name;
+        this.selectedRace = this.raceData.find(
+          (race) => (race.name = character.race)
+        );
+        this.selectedClass = this.classData.find(
+          (characterClass) => (characterClass.name = character.class)
+        );
+        this.attributeScores = [];
+
+        this.str.push(character.attributes.str);
+        this.dex.push(character.attributes.dex);
+        this.con.push(character.attributes.con);
+        this.int.push(character.attributes.int);
+        this.wis.push(character.attributes.wis);
+        this.cha.push(character.attributes.cha);
+      });
+  }
 
   public drop(event: CdkDragDrop<number[]>) {
     if (event.previousContainer === event.container) {
@@ -65,9 +97,9 @@ export class CreationComponent implements OnInit {
   }
 
   public saveCharacter() {
-    this.character.name = this.characterName;
-    this.character.race = this.selectedRace.name;
-    this.character.class = this.selectedClass.name;
+    this.character.name = this.characterName || '';
+    this.character.race = this.selectedRace ? this.selectedRace.name : '';
+    this.character.class = this.selectedClass ? this.selectedClass.name : '';
 
     this.character.attributes.str = this.str[0];
     this.character.attributes.dex = this.dex[0];
@@ -76,9 +108,7 @@ export class CreationComponent implements OnInit {
     this.character.attributes.wis = this.wis[0];
     this.character.attributes.cha = this.cha[0];
 
-    this.character.userEmail = this.appCache.authorizedUser
-      ? this.appCache.authorizedUser.email
-      : '';
+    this.character.userEmail = this.userEmail;
 
     this.apiService.saveCharacter(this.character).subscribe((result) => {
       this.character = result;
