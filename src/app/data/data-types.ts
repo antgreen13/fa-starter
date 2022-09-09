@@ -34,3 +34,11 @@ export class Character {
 
   constructor() {}
 }
+
+export class RaceTraits {
+  index: string;
+  name: string;
+  url: string;
+
+  constructor() {}
+}
