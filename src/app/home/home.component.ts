@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { AppCacheService } from '../app-cache.service';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -26,7 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private subs = new Subscription();
 
   public displayedColumns: string[] = ['name', 'race', 'class'];
-  public displayedActionColumns = [...this.displayedColumns, 'delete'];
+  public displayedActionColumns = [...this.displayedColumns, 'actions'];
 
   public characterData = new MatTableDataSource<Character[]>();
   private dataArray: any = [];
@@ -34,7 +35,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private readonly authService: SocialAuthService,
     private apiService: ApiService,
-    public appCache: AppCacheService
+    public appCache: AppCacheService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   public ngOnInit() {
@@ -90,6 +93,12 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.dataArray.splice(index, 1);
           this.characterData.data = [...this.dataArray];
         });
+    }
+  }
+
+  public editCharacter(index: number) {
+    if (this.user) {
+      this.router.navigate([`/creation/${this.dataArray[index].name}`]);
     }
   }
 }
