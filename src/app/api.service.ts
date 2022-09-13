@@ -68,4 +68,5 @@ export class ApiService {
     const endpoint = `${this.flaskUrl}/getAttributes?characterClass=${characterClass}`;
     return this.http.get<any>(endpoint);
   }
+  
 }
