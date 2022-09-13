@@ -42,6 +42,38 @@ export class PopupDialog implements OnInit {
         });
         break;
       }
+      case 'classTip': {
+        this.apiService.getClassStats(this.data.data).subscribe((results) =>{
+          this.title = `You've selected ${this.data.data}`;
+          var data : string[] = [];
+          var keys = Object.keys(results)
+          keys.forEach((key) => {
+            data.push(key);
+          })
+          this.description = `Our data shows that the most common classes for  
+                              ${this.data.data} are ${keys[0]}, ${keys[1]}, and ${keys[2]}. `
+          
+        })
+        break;
+      }
+      case 'attributeTips': {
+        var highest = '';
+        var secondHighest = '';
+        var value = 0;
+        this.apiService.getAttributes(this.data.data).subscribe((results) => {
+          this.title = `You've selected ${this.data.data}`;
+          var keys = Object.keys(results)
+          keys.forEach((key) => {
+            if(results[key] > value) {
+              secondHighest = highest;
+              highest = key
+              value = results[key]
+            }
+          })
+          this.description = `Our data shows that the two highest stats for a ${this.data.data} are ${highest} and ${secondHighest}.`
+        })
+        break;
+      }
     }
     
   }

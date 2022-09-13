@@ -58,4 +58,14 @@ export class ApiService {
     const endpoint= `${this.dndApiUrl}${featureUrl}`
     return this.http.get<any>(endpoint);
   }
+
+  public getClassStats(race: string) {
+    const endpoint = `${this.flaskUrl}/getClassStats?characterRace=${race}`;
+    return this.http.get<any>(endpoint);
+  }
+
+  public getAttributes(characterClass: string) {
+    const endpoint = `${this.flaskUrl}/getAttributes?characterClass=${characterClass}`;
+    return this.http.get<any>(endpoint);
+  }
 }
