@@ -1,115 +1,202 @@
-<form>
 <mat-tab-group mat-align-tabs="start">
-    <mat-tab label="Race">
-        <mat-form-field appearance="fill">
-            <mat-label>Character Race</mat-label>
-            <mat-select [(ngModel)]="selectedRace" name="race">
-                <mat-option *ngFor="let race of raceData" [value]="race">
-                {{race.name}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <div *ngIf='selectedRace' class="body">{{selectedRace.description}}</div>
+  <mat-tab label="Race: {{ selectedRace?.name }}">
+    <mat-form-field class="text-form-field" appearance="fill">
+      <mat-label>Character Name</mat-label>
+      <input matInput type="text" [(ngModel)]="characterName" required />
+      <button
+        *ngIf="characterName"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="characterName = ''"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
 
-    </mat-tab>
-    <mat-tab label="Class">
-        <mat-form-field appearance="fill">
-            <mat-label>Character Class</mat-label>
-            <mat-select [(ngModel)]="selectedClass" name="class" >
-                <mat-option *ngFor="let class of classData" [value]="class">
-                {{class.name}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <div *ngIf='selectedClass' class="body">{{selectedClass.description}}</div>
-    </mat-tab>
-    <mat-tab label="Attributes">
-        <div class=body>
-            <p>Normally your ability scores are generated randomly, but for new players we recommend you use the Standard array. 
-                Use the following scores and assign them to your attributes: 15, 14, 13, 12, 10, 8.
-            </p>
-        </div>
-        <div class="body" cdkDropListGroup>
-            <div class="example-container">
-              <h2>Strength</h2>
-          
-              <div
-                cdkDropList
-                [cdkDropListData]="str"
-                class="example-list"
-                (cdkDropListDropped)="drop($event)">
-                <div class="example-box" *ngFor="let item of str" cdkDrag>{{item}}</div>
-              </div>
-            </div>
-            <div class="example-container">
-                <h2>Dexterity</h2>
-            
-                <div
-                  cdkDropList
-                  [cdkDropListData]="dex"
-                  class="example-list"
-                  (cdkDropListDropped)="drop($event)">
-                  <div class="example-box" *ngFor="let item of dex" cdkDrag>{{item}}</div>
-                </div>
-            </div>
-            <div class="example-container">
-                <h2>Constitution</h2>
-            
-                <div
-                  cdkDropList
-                  [cdkDropListData]="con"
-                  class="example-list"
-                  (cdkDropListDropped)="drop($event)">
-                  <div class="example-box" *ngFor="let item of con" cdkDrag>{{item}}</div>
-                </div>
-            </div>
-            <div class="example-container">
-                <h2>Intelligence</h2>
-            
-                <div
-                  cdkDropList
-                  [cdkDropListData]="int"
-                  class="example-list"
-                  (cdkDropListDropped)="drop($event)">
-                  <div class="example-box" *ngFor="let item of int" cdkDrag>{{item}}</div>
-                </div>
-            </div>
-            <div class="example-container">
-                <h2>Wisdom</h2>
-            
-                <div
-                  cdkDropList
-                  [cdkDropListData]="wis"
-                  class="example-list"
-                  (cdkDropListDropped)="drop($event)">
-                  <div class="example-box" *ngFor="let item of wis" cdkDrag>{{item}}</div>
-                </div>
-            </div>
-            <div class="example-container">
-                <h2>Charisma</h2>
-            
-                <div
-                  cdkDropList
-                  [cdkDropListData]="cha"
-                  class="example-list"
-                  (cdkDropListDropped)="drop($event)">
-                  <div class="example-box" *ngFor="let item of cha" cdkDrag>{{item}}</div>
-                </div>
-            </div>
-
-            <div class="list-container">
-              <h2>Attributes</h2>
-          
-              <div
-                cdkDropList
-                [cdkDropListData]="attributeScores"
-                class="example-list"
-                (cdkDropListDropped)="drop($event)">
-                <div class="example-box" *ngFor="let item of attributeScores" cdkDrag>{{item}}</div>
-              </div>
-            </div>
+    <mat-form-field appearance="fill">
+      <mat-label>Character Race</mat-label>
+      <mat-select
+        [(ngModel)]="selectedRace"
+        name="race"
+        required
+        (ngModelChange)="getRaceData()"
+      >
+        <mat-option *ngFor="let race of raceData" [value]="race">
+          {{ race.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div *ngIf="selectedRace" class="body">
+      {{ selectedRace.description }}
+      <h2>Racial Traits</h2>
+      <div *ngFor="let trait of raceTraits">
+        <button
+          mat-raise-button
+          color="primary"
+          class="button"
+          (click)="openPopupDialog('trait', trait.url)"
+        >
+          {{ trait.name }}
+          <mat-icon>help</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Class: {{ selectedClass?.name }}">
+    <mat-form-field appearance="fill">
+      <mat-label>Character Class</mat-label>
+      <mat-select
+        [(ngModel)]="selectedClass"
+        name="class"
+        required
+        (ngModelChange)="getClassData()"
+      >
+        <mat-option *ngFor="let class of classData" [value]="class">
+          {{ class.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div *ngIf="selectedClass" class="body">
+      {{ selectedClass.description }}
+      <h2>Class Features</h2>
+      <div *ngFor="let feature of classFeatures">
+        <button
+          mat-raise-button
+          color="primary"
+          class="button"
+          (click)="openPopupDialog('feature', feature.url)"
+        >
+          {{ feature.name }}
+          <mat-icon>help</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Attributes">
+    <div class="body">
+      <p>
+        Normally your ability scores are generated randomly, but for new players
+        we recommend you use the Standard array. Use the following scores and
+        assign them to your attributes: 15, 14, 13, 12, 10, 8. Select an
+        attribute for more details.
+      </p>
+    </div>
+    <div class="body" cdkDropListGroup>
+      <div class="example-container">
+        <button mat-button (click)="openPopupDialog('attribute', 'str')">
+          <h2>Strength<mat-icon>help</mat-icon></h2>
+        </button>
+        <div
+          cdkDropList
+          [cdkDropListData]="str"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          <div class="example-box" *ngFor="let item of str" cdkDrag>
+            {{ item }}
           </div>
-          
-    </mat-tab>
-  </mat-tab-group>
-</form>
+        </div>
+      </div>
+      <div class="example-container">
+        <button mat-button (click)="openPopupDialog('attribute', 'dex')">
+          <h2>Dexterity<mat-icon>help</mat-icon></h2>
+        </button>
+
+        <div
+          cdkDropList
+          [cdkDropListData]="dex"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          <div class="example-box" *ngFor="let item of dex" cdkDrag>
+            {{ item }}
+          </div>
+        </div>
+      </div>
+      <div class="example-container">
+        <button mat-button (click)="openPopupDialog('attribute', 'con')">
+          <h2>Constituion<mat-icon>help</mat-icon></h2>
+        </button>
+
+        <div
+          cdkDropList
+          [cdkDropListData]="con"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          <div class="example-box" *ngFor="let item of con" cdkDrag>
+            {{ item }}
+          </div>
+        </div>
+      </div>
+      <div class="example-container">
+        <button mat-button (click)="openPopupDialog('attribute', 'int')">
+          <h2>Intelligence<mat-icon>help</mat-icon></h2>
+        </button>
+
+        <div
+          cdkDropList
+          [cdkDropListData]="int"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          <div class="example-box" *ngFor="let item of int" cdkDrag>
+            {{ item }}
+          </div>
+        </div>
+      </div>
+      <div class="example-container">
+        <button mat-button (click)="openPopupDialog('attribute', 'wis')">
+          <h2>Wisdom<mat-icon>help</mat-icon></h2>
+        </button>
+
+        <div
+          cdkDropList
+          [cdkDropListData]="wis"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          <div class="example-box" *ngFor="let item of wis" cdkDrag>
+            {{ item }}
+          </div>
+        </div>
+      </div>
+      <div class="example-container">
+        <button mat-button (click)="openPopupDialog('attribute', 'cha')">
+          <h2>Charisma<mat-icon>help</mat-icon></h2>
+        </button>
+
+        <div
+          cdkDropList
+          [cdkDropListData]="cha"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          <div class="example-box" *ngFor="let item of cha" cdkDrag>
+            {{ item }}
+          </div>
+        </div>
+      </div>
+
+      <div class="list-container">
+        <h2>Attributes</h2>
+
+        <div
+          cdkDropList
+          [cdkDropListData]="attributeScores"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          <div class="example-box" *ngFor="let item of attributeScores" cdkDrag>
+            {{ item }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="body">
+      <button class="button" (click)="saveCharacter()">Save Character</button>
+    </div>
+  </mat-tab>
+</mat-tab-group>
