@@ -57,6 +57,9 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <button *ngIf="selectedRace" type="button" class="button" (click)="openPopupDialog('classTip', selectedRace.name)">
+      Character Tip
+    </button>
     <div *ngIf="selectedClass" class="body">
       {{ selectedClass.description }}
       <h2>Class Features</h2>
@@ -82,6 +85,7 @@
         attribute for more details.
       </p>
     </div>
+    
     <div class="body" cdkDropListGroup>
       <div class="example-container">
         <button mat-button (click)="openPopupDialog('attribute', 'str')">
@@ -196,6 +200,9 @@
     </div>
 
     <div class="body">
+      <button *ngIf="selectedClass" type="button" class="button" (click)="openPopupDialog('attributeTips', selectedClass.name)">
+        Attribute Tips
+      </button>
       <button class="button" (click)="saveCharacter()">Save Character</button>
     </div>
   </mat-tab>

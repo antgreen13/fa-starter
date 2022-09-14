@@ -5,6 +5,7 @@ import logging
 import json
 from datetime import datetime
 from firebase_admin import credentials, firestore, initialize_app
+import bigquery
 
 blueprint = flask.Blueprint('firebase', __name__, url_prefix='/firebase')
 
@@ -25,17 +26,17 @@ def read():
     user_email = flask.request.args.get('userEmail')
     character_name = flask.request.args.get('characterName')
 
-    if user_email:
-      character_data = db.collection(user_email)
-      if character_name:
-        character = character_data.document(character_name).get()
-        return flask.jsonify(character.to_dict()), 200
-      else:
-        all_characters = [doc.to_dict() for doc in character_data.stream()]
-        return flask.jsonify(all_characters), 200
+    
+    character_data = db.collection(user_email)
+    if character_name:
+      character = character_data.document(character_name).get()
+      return flask.jsonify(character.to_dict()), 200
+    else:
+      all_characters = [doc.to_dict() for doc in character_data.stream()]
+      return flask.jsonify(all_characters), 200
 
   except Exception as e:
-      return f"An Error Occurred when trying to fetch character data: {e}. Args: {user_email}, {character_name}"
+      return flask.jsonify(f"An Error Occurred when trying to fetch character data: {e}. Args: {user_email}, {character_name}")
 
 @blueprint.route('/saveCharacter', methods=['POST'])
 def save():
@@ -51,7 +52,7 @@ def save():
     return flask.jsonify({"success": True}), 200
     
   except Exception as e:
-        return f"An Error Occurred when trying to save/update character data: {e}. Args: {user_email}, {character_name}"
+        return flask.jsonify(f"An Error Occurred when trying to save/update character data: {e}. Args: {user_email}, {character_name}")
 
 @blueprint.route('/delete', methods=['GET', 'DELETE'])
 def delete():
@@ -66,5 +67,30 @@ def delete():
         character_data.document(character_name).delete()
         return flask.jsonify({"success": True}), 200
     except Exception as e:
-        return f"An Error Occurred when trying to delete character data: {e}. Args: {user_email}, {character_name}"
+        return flask.jsonify(f"An Error Occurred when trying to delete character data: {e}. Args: {user_email}, {character_name}")
 
+@blueprint.route('/getClassStats', methods=['GET'])
+def getClassStats():
+  """
+  getClassStats() : Return top 3 classes based on character race
+  """
+
+  try:
+    character_race = flask.request.args.get('characterRace')
+    races = bigquery.get_popular_classes(character_race)
+    return flask.jsonify(races), 200
+  except Exception as e:
+    return flask.jsonify(f"An Error Occurred when trying to get character race data: {e}.")
+
+@blueprint.route('/getAttributes', methods=['GET'])
+def getAttributes():
+  """
+  getAttributes() : Return attributes based on class info
+  """
+
+  try:
+    character_class = flask.request.args.get('characterClass')
+    attributes = bigquery.get_popular_attributes(character_class)
+    return flask.jsonify(attributes), 200
+  except Exception as e:
+    return flask.jsonify(f"An Error Occurred when trying to get character race data: {e}.")

@@ -33,6 +33,21 @@ class TestFirebaseServices(unittest.TestCase):
             }
         }
 
+        self.broken_character = {
+            'name': '',
+            'race': 'Human',
+            'class': 'Fighter',
+            'userEmail': '',
+            'attributes': {
+                'str': 15,
+                'dex': 14,
+                'con': 13,
+                'int': 12,
+                'wis': 10,
+                'cha': 8,
+            }
+        }
+
     def test_create_app(self):
         self.assertIsNotNone(flask.current_app)
 
@@ -41,6 +56,12 @@ class TestFirebaseServices(unittest.TestCase):
         mock_firebase.return_value = 200
         response = self.test_app.post('/firebase/saveCharacter', json.dumps(self.character), headers=self.headers)
         self.assertEqual(response.status_code, 200)
+        
+    def test_save_character_error(self):
+        response = self.test_app.post('/firebase/saveCharacter', json.dumps(self.broken_character), headers=self.headers)
+        error_message = f"An Error Occurred when trying to save/update character data: A document must have an even number of path elements. Args: {''}, {''}"
+        error_response = json.loads(response.text)
+        self.assertEqual(error_response, error_message)
 
     @mock.patch('app.firebase')
     def test_read_character(self, mock_firebase):
@@ -57,6 +78,12 @@ class TestFirebaseServices(unittest.TestCase):
         endpoint = f'/firebase/delete?userEmail={self.userEmail}&characterName={self.characterName}'
         response = self.test_app.delete(endpoint)
         self.assertEqual(response.status_code, 200)
+
+    def test_delete_character_error(self):
+        endpoint = f"/firebase/delete?userEmail=''&characterName={self.characterName}"
+        error_message = f"An Error Occurred when trying to save/update character data: A document must have an even number of path elements. Args: {''}, {''}"
+        error_response = json.loads(response.text)
+        self.assertEqual(error_response, error_message)
 
 if __name__ =='main':
     unittest.main()
